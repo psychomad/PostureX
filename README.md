@@ -1,5 +1,3 @@
-Excellent choice. A professional English README is essential for visibility on GitHub. Here is the refined version, formatted and ready to be pasted into your README.md file.
-
 🛡️ PostureX
 Security Posture & OSINT Monitoring Tool
 
