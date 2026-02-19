@@ -1,5 +1,5 @@
 <img width="1024" height="1024" alt="posturex" src="https://github.com/user-attachments/assets/1529fb15-cd5f-4e27-8305-193e35ef1d93" />
-<img width="1024" height="1024" alt="postirex" src="https://github.com/user-attachments/assets/2ff7e1e0-049d-4f0b-878e-34e43b1d49c8" />
+
  
 🛡️ PostureX
 Security Posture & OSINT Monitoring Tool
