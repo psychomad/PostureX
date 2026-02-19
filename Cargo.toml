@@ -1,0 +1,21 @@
+[package]
+name = "posturex"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+# Runtime asincrono e Web Server
+tokio = { version = "1", features = ["full"] }
+axum = "0.7"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# Database (SQLite)
+sqlx = { version = "0.7", features = ["runtime-tokio-rustls", "sqlite"] }
+
+# Client HTTP e Utility
+reqwest = { version = "0.12", features = ["json"] }
+tera = "1.19" # Template Engine per la Dashboard
+strsim = "0.11" # Per calcolare somiglianza tra domini (Typosquatting)
+chrono = { version = "0.4", features = ["serde"] }
+urlencoding = "2.1"

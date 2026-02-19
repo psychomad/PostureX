@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>PostureX | Security Intelligence</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap');
+        body { font-family: 'Fira Code', monospace; background-color: #0d0d0e; color: #8e8e93; }
+        .cyber-panel { border: 1px solid #1c1c1e; background: #161618; }
+        input { background: #000 !important; border: 1px solid #2c2c2e !important; color: #fff !important; }
+        .dork-link { color: #3b82f6; text-decoration: underline; font-size: 9px; word-break: break-all; }
+        .dork-link:hover { color: #60a5fa; }
+    </style>
+</head>
+<body class="p-6">
+    <div class="max-w-7xl mx-auto">
+        <header class="flex justify-between items-center mb-8 border-b border-gray-800 pb-6">
+            <div>
+                <h1 class="text-xl font-bold text-white tracking-widest">POSTUREX <span class="text-red-500">SYSTEM</span></h1>
+                <p class="text-[9px] text-gray-600 uppercase">Analisi vulnerabilità e Google Dorking</p>
+            </div>
+            <form action="/clear-events" method="POST">
+                <button class="text-[9px] border border-gray-700 px-3 py-1 hover:bg-red-900 hover:text-white transition uppercase">Clear All Logs</button>
+            </form>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <div class="space-y-6">
+                <div class="cyber-panel p-5">
+                    <h3 class="text-[10px] font-bold text-blue-500 mb-4 uppercase tracking-tighter">Target Infrastruttura (SSL/Dorks)</h3>
+                    <form action="/add-domain" method="POST" class="space-y-2 mb-4">
+                        <input type="text" name="domain" placeholder="dominio.pl" class="w-full p-2 text-xs">
+                        <button class="w-full bg-blue-600 text-black font-bold py-1 text-[10px] uppercase">Add Domain</button>
+                    </form>
+                    <div class="text-[9px] space-y-1 max-h-20 overflow-y-auto">
+                        {% for d in watched_domains %} <div class="text-gray-500">> {{d}}</div> {% endfor %}
+                    </div>
+                </div>
+
+                <div class="cyber-panel p-5">
+                    <h3 class="text-[10px] font-bold text-green-500 mb-4 uppercase tracking-tighter">Target Identità (Breach)</h3>
+                    <form action="/add-email" method="POST" class="space-y-2 mb-4">
+                        <input type="email" name="email" placeholder="email@test.pl" class="w-full p-2 text-xs">
+                        <button class="w-full bg-green-600 text-black font-bold py-1 text-[10px] uppercase">Add Email</button>
+                    </form>
+                    <div class="text-[9px] space-y-1 max-h-20 overflow-y-auto">
+                        {% for e in watched_emails %} <div class="text-gray-500">> {{e}}</div> {% endfor %}
+                    </div>
+                </div>
+
+                <div class="cyber-panel p-5 border-t-2 border-t-orange-500">
+                    <h3 class="text-[10px] font-bold text-orange-500 mb-4 uppercase tracking-tighter">Target IP (Port Scan)</h3>
+                    <form action="/add-ip" method="POST" class="space-y-2 mb-4">
+                        <input type="text" name="ip" placeholder="1.2.3.4" class="w-full p-2 text-xs">
+                        <button class="w-full bg-orange-600 text-black font-bold py-1 text-[10px] uppercase">Add Ip Address</button>
+                    </form>
+                    <div class="text-[9px] space-y-1 max-h-20 overflow-y-auto">
+                        {% for ip in watched_ips %} <div class="text-gray-500">> {{ip}}</div> {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-3">
+                <div class="cyber-panel p-6 overflow-hidden min-h-[600px]">
+                    <h2 class="text-[10px] font-bold text-gray-500 uppercase mb-6 tracking-widest border-b border-gray-900 pb-2">Feed Intelligence Eventi</h2>
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="text-[9px] text-gray-600 border-b border-gray-800">
+                                <th class="pb-3 w-1/4 uppercase">Sorgente</th>
+                                <th class="pb-3 w-2/4 uppercase">Dettaglio Intelligence</th>
+                                <th class="pb-3 text-right w-1/4 uppercase">Livello</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-[10px]">
+                            {% for event in events %}
+                            <tr class="border-b border-gray-800/40 hover:bg-white/[0.02]">
+                                <td class="py-3 font-bold text-gray-500 uppercase align-top">{{ event.source }}</td>
+                                <td class="py-3 text-gray-300 align-top">
+                                    {% if event.source == "GOOGLE_DORK" %}
+                                        {% set parts = event.content | split(pat=" -> ") %}
+                                        {{ parts[0] }} <br>
+                                        <a href="{{ parts[1] }}" target="_blank" class="dork-link">{{ parts[1] }}</a>
+                                    {% else %}
+                                        {{ event.content }}
+                                    {% endif %}
+                                </td>
+                                <td class="py-3 text-right align-top">
+                                    {% if event.severity == "HIGH" %}
+                                    <span class="text-red-500 font-bold tracking-tighter uppercase">[Critical]</span>
+                                    {% else %}
+                                    <span class="text-gray-700 font-bold uppercase">[Monitored]</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
